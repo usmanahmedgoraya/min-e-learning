@@ -55,8 +55,8 @@ Ensure you have the following installed:
 
 The application is deployed and can be accessed at:
 
-- **Frontend (Next.js) Deployment:** [Live URL](https://your-frontend-deployment-link.com)
-- **Backend API:** [API URL](https://your-backend-api-link.com)
+- **Frontend (Next.js) Deployment:** [Live URL](https://e-learning-mini.vercel.app)
+- **Backend API:** [API URL](https://mini-e-learning-backend.vercel.app/api)
 
 ---
 
@@ -69,6 +69,7 @@ The application consists of several core UI components.
   - Home
   - Featured Courses
   - Course List
+  - Reviews
   - Contact
 - Responsive design with a hamburger menu on mobile screens.
 
@@ -84,7 +85,7 @@ The application consists of several core UI components.
 ### **Course List with Search & Filter**
 - Displays all available courses in a grid or list format.
 - Users can:
-  - Search by course name, instructor, or keyword.
+  - Search by course name, or keyword.
   - Filter by category, price range, and rating.
   - Sort results by relevance, newest, or highest rated.
 
@@ -200,5 +201,3 @@ npm run start
 ### 🚀 **Next Steps**
 - Implement API for contact form submission.
 
----
-For further assistance, reach out to the project maintainer.
