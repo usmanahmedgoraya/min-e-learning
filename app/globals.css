@@ -1,26 +1,155 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --radius: 0.5rem;
+    
+    /* Light theme */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.15 0.03 260);
+    
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.15 0.03 260);
+    
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.15 0.03 260);
+    
+    --primary: oklch(0.55 0.22 260);
+    --primary-foreground: oklch(0.98 0.01 220);
+    
+    --secondary: oklch(0.96 0.01 220);
+    --secondary-foreground: oklch(0.18 0.03 260);
+    
+    --muted: oklch(0.96 0.01 220);
+    --muted-foreground: oklch(0.55 0.02 250);
+    
+    --accent: oklch(0.96 0.01 220);
+    --accent-foreground: oklch(0.18 0.03 260);
+    
+    --destructive: oklch(0.63 0.25 25);
+    --destructive-foreground: oklch(0.98 0.01 220);
+    
+    --border: oklch(0.91 0.01 220);
+    --input: oklch(0.91 0.01 220);
+    --ring: oklch(0.55 0.22 260);
+  }
+
+  .dark {
+    /* Dark theme */
+    --background: oklch(0.15 0.03 260);
+    --foreground: oklch(0.98 0.01 220);
+    
+    --card: oklch(0.15 0.03 260);
+    --card-foreground: oklch(0.98 0.01 220);
+    
+    --popover: oklch(0.15 0.03 260);
+    --popover-foreground: oklch(0.98 0.01 220);
+    
+    --primary: oklch(0.65 0.25 255);
+    --primary-foreground: oklch(0.18 0.03 260);
+    
+    --secondary: oklch(0.22 0.02 250);
+    --secondary-foreground: oklch(0.98 0.01 220);
+    
+    --muted: oklch(0.22 0.02 250);
+    --muted-foreground: oklch(0.65 0.02 250);
+    
+    --accent: oklch(0.22 0.02 250);
+    --accent-foreground: oklch(0.98 0.01 220);
+    
+    --destructive: oklch(0.45 0.16 25);
+    --destructive-foreground: oklch(0.98 0.01 220);
+    
+    --border: oklch(0.22 0.02 250);
+    --input: oklch(0.22 0.02 250);
+    --ring: oklch(0.6 0.25 270);
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme {
+  /* Container */
+  --container-padding: 2rem;
+  --container-max-width: 1400px;
+  
+  /* Radius scale */
+  --radius-sm: calc(var(--radius) - 0.125rem);
+  --radius-md: calc(var(--radius) - 0.0625rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+  
+  /* Color mappings */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  
+  /* Breakpoints */
+  --screen-2xl: 1400px;
+  
+  /* Animations */
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+  
+  --animation-accordion-down: accordion-down 0.2s ease-out;
+  --animation-accordion-up: accordion-up 0.2s ease-out;
+}
+
+/* Container styles */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+  
+  @media (min-width: 1400px) {
+    max-width: var(--container-max-width);
+  }
+}
+
+/* Animation classes */
+.animate-accordion-down {
+  animation: var(--animation-accordion-down);
+}
+
+.animate-accordion-up {
+  animation: var(--animation-accordion-up);
 }
