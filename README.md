@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Docs - Job Crack Task
 
-## Getting Started
+This documentation provides comprehensive guidelines on setting up the project locally and understanding the UI structure.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 1. How to Set Up the Project Locally
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Follow these steps to set up and run the project on your local machine.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+Ensure you have the following installed:
+- **Node.js** (Latest LTS recommended)
+- **Yarn** or **npm**
+- **Git**
+- **Next.js**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation Steps
 
-## Learn More
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/usmanahmedgoraya/min-e-learning.git
+   cd your-repo
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Install Dependencies**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Set Up Environment Variables**
+   - Create a `.env.local` file in the root directory.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Run the Development Server**
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   ```
+   This starts the Next.js development server at `http://localhost:3000/`.
 
-## Deploy on Vercel
+5. **Build for Production (Optional)**
+   ```sh
+   npm run build
+   npm run start
+   ```
+   The project will be available at `http://localhost:3000/`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 2. UI Structure
+
+The application consists of several core UI components.
+
+### **Navbar**
+- The navbar includes navigation links to different sections such as:
+  - Home
+  - Featured Courses
+  - Course List
+  - Contact
+  - User Profile (if logged in)
+- Responsive design with a hamburger menu on mobile screens.
+
+### **Featured Courses**
+- A section showcasing top-rated or trending courses.
+- Each course card displays:
+  - Course Image
+  - Title
+  - Instructor Name
+  - Rating
+  - Price
+
+### **Course List with Search & Filter**
+- Displays all available courses in a grid or list format.
+- Users can:
+  - Search by course name, instructor, or keyword.
+  - Filter by category, price range, and rating.
+  - Sort results by relevance, newest, or highest rated.
+
+### **Course Detail Page**
+- Displays full details of a selected course, including:
+  - Course Title and Description
+  - Instructor Details
+  - Course Curriculum
+  - User Reviews and Ratings
+  - Enrollment Button
+- Related courses section suggesting similar courses.
+
+### **User Authentication**
+- Users can register and log in using their email and password.
+- Email verification is required before accessing full account functionalities.
+- The backend is already set up with all auth related screen, but frontend-only reset password screens are implemented.
+- Authentication pages include:
+  - Login Page
+  - Registration Page
+  - Email Verification Page
+  - Forgot Password Page
+  - Reset Password Page
+
+### **Contact Us Page**
+
+- A form allowing users to send inquiries or feedback.
+- Fields include:
+  - Name
+  - Email
+  - Subject
+  - Message
+- Displays a confirmation message after successful submission.
+
+---
+
+### 🚀 **Next Steps**
+- Integrate authentication with the backend.
+- Implement API for contact form submission.
+- Enhance UI/UX with animations and better responsiveness.
+

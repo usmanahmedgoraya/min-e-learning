@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ProtectedEnrollButton } from "@/components/with-auth"
 import { CourseDetailSkeleton } from "@/components/skeleton/course-detail-skeleton"
-import { Lesson } from "@/lib/data"
+import { Lesson } from "@/types/type"
 
 // Animation variants
 const fadeIn = {
@@ -125,17 +125,17 @@ export default function CourseDetailPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
-                    <h3>About This Course</h3>
+                    <h3 className="text-xl font-bold text-accent-foreground my-3">About This Course</h3>
                     <p>{course.longDescription || course.description}</p>
-                    <h3>What You&apos;ll Learn</h3>
-                    <ul>
+                    <h3 className="text-xl font-bold text-accent-foreground my-3">What You&apos;ll Learn</h3>
+                    <ul className="list-disc">
                       <li>Understand the core concepts of {course.title}</li>
                       <li>Apply your knowledge to real-world projects</li>
                       <li>Master the essential skills needed in the industry</li>
                       <li>Build a portfolio of projects to showcase your abilities</li>
                     </ul>
-                    <h3>Requirements</h3>
-                    <ul>
+                    <h3 className="text-xl font-bold text-accent-foreground my-3">Requirements</h3>
+                    <ul className="list-disc">
                       <li>Basic understanding of {course.category}</li>
                       <li>A computer with internet access</li>
                       <li>Dedication and willingness to learn</li>
@@ -222,7 +222,7 @@ export default function CourseDetailPage() {
                 </div>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>${course.price.toFixed(2)}</span>
+                    <span>${course.price}</span>
                     {course.isNew && <Badge>New</Badge>}
                   </CardTitle>
                   <CardDescription>Full lifetime access to this course</CardDescription>
@@ -247,8 +247,8 @@ export default function CourseDetailPage() {
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-col space-y-2">
-                  <ProtectedEnrollButton courseId={course.id} price={course.price} />
+                <CardFooter className="flex flex-col space-y-2 pb-4">
+                  <ProtectedEnrollButton price={course.price} />
                   <Button variant="outline" className="w-full">
                     <BookOpen className="mr-2 h-4 w-4" />
                     Add to Wishlist

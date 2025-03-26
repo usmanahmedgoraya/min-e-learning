@@ -12,6 +12,10 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
+import { loginAction } from "@/app/actions/auth.action"
+import { toast } from "sonner"
+import Link from "next/link"
+import { useAuth } from "../with-auth"
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -21,14 +25,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-interface LoginFormProps {
-  onForgotPassword: (email: string) => void
-}
 
-export function LoginForm({ onForgotPassword }: LoginFormProps) {
+export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const { getRedirectPath, clearRedirectPath } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -41,13 +43,23 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true)
+    const result = await loginAction(values)
+    const redirectURL = getRedirectPath()
+    if (!result?.emailVerified) {
+      toast.error(result.message);
+      // return;
+    }
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    // await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    console.log(values)
+    console.log(values, redirectURL)
     setIsLoading(false)
+    if (redirectURL.length > 0) {
+      clearRedirectPath()
+      return router.push(redirectURL)
 
+    }
     // Redirect to home page after successful login
     router.push("/")
   }
@@ -114,13 +126,8 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
               )}
             />
 
-            <Button
-              type="button"
-              variant="link"
-              className="px-0 text-sm font-normal"
-              onClick={() => onForgotPassword(form.getValues("email"))}
-            >
-              Forgot password?
+            <Button type="button" variant="link" className="px-0 text-sm font-normal" asChild>
+              <Link href="/auth/reset-password">Forgot password?</Link>
             </Button>
           </div>
 

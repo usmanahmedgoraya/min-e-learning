@@ -1,106 +1,106 @@
 "use client"
 
 import { useState } from "react"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
-import { motion } from "framer-motion"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-
+import { ArrowLeft, Eye, EyeOff, Loader2, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { signUpAction } from "@/app/actions/auth.action"
-import { FormValues, SignupFormProps } from "@/types/auth.type"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
-export const formSchema = z
+// Form validation schema with password requirements
+const formSchema = z
   .object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+      .regex(/[0-9]/, { message: "Password must contain at least one number" }),
     confirmPassword: z.string(),
-    agreeTerms: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the terms and conditions",
-    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   })
 
+type FormValues = z.infer<typeof formSchema>
 
+interface NewPasswordStepProps {
+  onSubmit: (password: string) => Promise<{ success: boolean; error?: string }>
+  onBack: () => void
+}
 
-export function SignupForm({ onVerifyAccount }: SignupFormProps) {
+export function NewPasswordStep({ onSubmit, onBack }: NewPasswordStepProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
       password: "",
       confirmPassword: "",
-      agreeTerms: false,
     },
   })
 
-
-
-
-  const onSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     setIsLoading(true)
-    await signUpAction(values)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    setError(null)
 
-    console.log(values)
-    setIsLoading(false)
+    try {
+      const result = await onSubmit(values.password)
 
-    // Redirect to verification page
-    onVerifyAccount(values.email)
+      if (!result.success && result.error) {
+        setError(result.error)
+      }
+    } catch (err) {
+      console.error(err);
+      
+      setError("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+    <div className="space-y-4">
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        className="mb-2 -ml-2 flex items-center text-muted-foreground"
+        onClick={onBack}
+        disabled={isLoading}
+      >
+        <ArrowLeft className="mr-1 h-4 w-4" />
+        Back
+      </Button>
+
+      <div className="space-y-2 text-left">
+        <h3 className="text-lg font-medium">Create new password</h3>
+        <p className="text-sm text-muted-foreground">
+          Your new password must be different from previously used passwords.
+        </p>
+      </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="your.email@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>New Password</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input type={showPassword ? "text" : "password"} placeholder="••••••••" {...field} />
@@ -155,44 +155,32 @@ export function SignupForm({ onVerifyAccount }: SignupFormProps) {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="agreeTerms"
-            render={({ field }) => (
-              <FormItem className="flex items-start space-x-2 space-y-0">
-                <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-sm font-normal">
-                    I agree to the{" "}
-                    <a href="/terms" className="text-primary hover:underline">
-                      Terms of Service
-                    </a>{" "}
-                    and{" "}
-                    <a href="/privacy" className="text-primary hover:underline">
-                      Privacy Policy
-                    </a>
-                  </FormLabel>
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
+          <div className="space-y-1 text-sm">
+            <p className="font-medium">Password requirements:</p>
+            <ul className="list-inside list-disc space-y-1 text-muted-foreground">
+              <li>At least 8 characters</li>
+              <li>At least one uppercase letter</li>
+              <li>At least one lowercase letter</li>
+              <li>At least one number</li>
+            </ul>
+          </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating account...
+                Updating password...
               </>
             ) : (
-              "Create account"
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Update password
+              </>
             )}
           </Button>
         </form>
       </Form>
-    </motion.div>
+    </div>
   )
 }
 

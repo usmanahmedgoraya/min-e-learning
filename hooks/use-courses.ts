@@ -1,7 +1,10 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import { type Course, courses, categories, levels, durations } from "@/lib/data"
+import { courses, categories, levels, durations } from "@/lib/data"
+import { Course } from "@/types/type"
+import { RootState } from "@/lib/redux/store"
+import { useSelector } from "react-redux"
 
 type FilterState = {
   search: string
@@ -22,8 +25,10 @@ const initialFilters: FilterState = {
 }
 
 export function useCourses() {
+  const { courses } = useSelector((state: RootState) => state.courses);
   const [filters, setFilters] = useState<FilterState>(initialFilters)
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>(courses)
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>()
+
 
   // Apply filters to courses
   useEffect(() => {
@@ -32,7 +37,7 @@ export function useCourses() {
     // Apply search filter
     if (filters.search) {
       const searchLower = filters.search.toLowerCase()
-      result = result.filter(
+      result = result && result?.filter(
         (course) =>
           course.title.toLowerCase().includes(searchLower) ||
           course.description.toLowerCase().includes(searchLower) ||
@@ -145,7 +150,7 @@ export function useCourses() {
   // Get filter counts
   const filterCounts = useMemo(() => {
     return {
-      total: filteredCourses.length,
+      total: filteredCourses?.length,
       categories: categories.map((category) => ({
         ...category,
         count: courses.filter((course) => course.category.toLowerCase() === category.name.toLowerCase()).length,
@@ -169,7 +174,7 @@ export function useCourses() {
         return { ...duration, count }
       }),
     }
-  }, [filteredCourses.length])
+  }, [filteredCourses?.length])
 
   return {
     courses: filteredCourses,

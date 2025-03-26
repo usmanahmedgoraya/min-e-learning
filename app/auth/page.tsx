@@ -14,10 +14,7 @@ export default function AuthPage() {
   const [showVerifyAccount, setShowVerifyAccount] = useState(false)
   const [email, setEmail] = useState("")
 
-  const handleForgotPassword = (email: string) => {
-    setEmail(email)
-    setShowForgotPassword(true)
-  }
+
 
   const handleVerifyAccount = (email: string) => {
     setEmail(email)
@@ -79,7 +76,7 @@ export default function AuthPage() {
                   <TabsTrigger value="signup">Sign Up</TabsTrigger>
                 </TabsList>
                 <TabsContent value="login">
-                  <LoginForm onForgotPassword={handleForgotPassword} />
+                  <LoginForm />
                 </TabsContent>
                 <TabsContent value="signup">
                   <SignupForm onVerifyAccount={handleVerifyAccount} />

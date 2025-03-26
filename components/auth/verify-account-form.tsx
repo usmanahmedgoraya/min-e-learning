@@ -14,19 +14,20 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { verifyEmailAction } from "@/app/actions/auth.action"
+import { toast } from "sonner"
+import { useAuth } from "../with-auth"
 
 const formSchema = z.object({
   pin1: z.string().length(1, { message: "Required" }),
   pin2: z.string().length(1, { message: "Required" }),
   pin3: z.string().length(1, { message: "Required" }),
-  pin4: z.string().length(1, { message: "Required" }),
-  pin5: z.string().length(1, { message: "Required" }),
-  pin6: z.string().length(1, { message: "Required" }),
+  pin4: z.string().length(1, { message: "Required" })
 })
 
-type FormValues = z.infer<typeof formSchema>
+export type FormValues = z.infer<typeof formSchema>
 
-interface VerifyAccountFormProps {
+export interface VerifyAccountFormProps {
   email: string
   onBack: () => void
 }
@@ -36,15 +37,14 @@ export function VerifyAccountForm({ email, onBack }: VerifyAccountFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
   const [resendDisabled, setResendDisabled] = useState(false)
-  const [countdown, setCountdown] = useState(60)
+  const [countdown, setCountdown] = useState(80);
+  const { clearRedirectPath, getRedirectPath } = useAuth()
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null)
   ]
 
   const form = useForm<FormValues>({
@@ -53,9 +53,7 @@ export function VerifyAccountForm({ email, onBack }: VerifyAccountFormProps) {
       pin1: "",
       pin2: "",
       pin3: "",
-      pin4: "",
-      pin5: "",
-      pin6: "",
+      pin4: ""
     },
   })
 
@@ -87,17 +85,26 @@ export function VerifyAccountForm({ email, onBack }: VerifyAccountFormProps) {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true)
-
+    const redirectURL = getRedirectPath()
     // Combine PIN values
     const pin = Object.values(values).join("")
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500))
-
+    const result = await verifyEmailAction({ email, otp: pin })
+    // If there is any error, handle this
+    if (result.error) {
+      toast.error(result.error || "An Error Occurred while requesting")
+      return;
+    }
     console.log({ email, pin })
     setIsLoading(false)
     setIsVerified(true)
-
+    setIsLoading(false)
+    if (redirectURL.length > 0) {
+      clearRedirectPath()
+      return router.push(redirectURL)
+    }
     // Redirect to home page after successful verification
     setTimeout(() => {
       router.push("/")
@@ -137,15 +144,15 @@ export function VerifyAccountForm({ email, onBack }: VerifyAccountFormProps) {
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2 text-center">
+            <div className="space-y-2 text-left">
               <h3 className="text-lg font-medium">Verify your account</h3>
               <p className="text-sm text-muted-foreground">
-                We&apos;ve sent a 6-digit verification code to <span className="font-medium">{email}</span>
+                We&apos;ve sent a 4-digit verification code to <span className="font-medium">{email}</span>
               </p>
             </div>
 
             <div className="flex justify-center space-x-2">
-              {[1, 2, 3, 4, 5, 6].map((num, index) => (
+              {[1, 2, 3, 4].map((num, index) => (
                 <FormField
                   key={num}
                   control={form.control}

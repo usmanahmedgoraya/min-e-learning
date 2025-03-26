@@ -12,12 +12,28 @@ import { CourseCardSkeleton } from "@/components/skeleton/course-card-skeleton"
 import { CourseFilters } from "@/components/course/course-filters"
 import { SearchInput } from "@/components/search-input"
 import { Button } from "@/components/ui/button"
-import { categories, levels, durations, courses as allCourses } from "@/lib/data"
+import { categories, levels, durations, } from "@/lib/data"
+import { getCourses } from "../actions/course.action"
+import { setCourses } from "@/lib/redux/slices/coursesSlice"
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
+import { RootState } from "@/lib/redux/store"
 
 export default function CoursesPage() {
+  // Get courses from Redux store
+  const { courses: allCourses } = useSelector((state: RootState) => state.courses)
   const router = useRouter()
   const searchParams = useSearchParams()
+  // console.log(allCourses, 'allCourses');
 
+  const dispatch = useDispatch();
+  const fetchCourse = async () => {
+    const courseData = await getCourses();
+    dispatch(setCourses(courseData))
+  }
+  useEffect(() => {
+    fetchCourse()
+  }, [])
   // Get query parameters
   const pageParam = searchParams?.get("page")
   const searchParam = searchParams?.get("search")
@@ -329,7 +345,7 @@ export default function CoursesPage() {
               <motion.div key="results" variants={container} initial="hidden" animate="show" exit={{ opacity: 0 }}>
                 <motion.div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredData.courses.map((course) => (
-                    <motion.div key={course.id} variants={item}>
+                    <motion.div key={course._id} variants={item}>
                       <CourseCard course={course} />
                     </motion.div>
                   ))}

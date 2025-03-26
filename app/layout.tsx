@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ReactQueryProvider } from "@/lib/react-query-provider"
+import { ReduxProvider } from "@/lib/redux/provider"
+import { Toaster } from "sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -26,13 +28,16 @@ export default function RootLayout({
       <body className={cn("min-h-screen antialiased", inter.className)}>
         {/* Wrap the entire app with a single instance of each provider */}
         <ReactQueryProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <div className="flex min-h-screen flex-col">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-          </ThemeProvider>
+          <ReduxProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+              <div className="flex min-h-screen flex-col">
+                <Toaster/>
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </ThemeProvider>
+          </ReduxProvider>
         </ReactQueryProvider>
       </body>
     </html>

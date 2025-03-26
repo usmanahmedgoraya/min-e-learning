@@ -70,7 +70,7 @@ export function ForgotPasswordForm({ email = "", onBack }: ForgotPasswordFormPro
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2 text-center">
+            <div className="space-y-2 text-left">
               <h3 className="text-lg font-medium">Forgot your password?</h3>
               <p className="text-sm text-muted-foreground">
                 Enter your email address and we&apos;ll send you a link to reset your password.

@@ -1,57 +1,5 @@
-export type Lesson = {
-  id: number
-  title: string
-  duration: string
-  isPreview: boolean
-}
+import { Category, Course, Duration, Level, NavItems } from "@/types/type"
 
-export type Course = {
-  id: number
-  title: string
-  slug: string
-  description: string
-  longDescription?: string
-  image: string
-  instructor: string
-  instructorImage?: string
-  rating: number
-  reviews: number
-  students: number
-  duration: string
-  lessons: number
-  lessonItems?: Lesson[]
-  level: "Beginner" | "Intermediate" | "Advanced"
-  category: string
-  tags: string[]
-  price: number
-  isFeatured: boolean
-  isNew: boolean
-  updatedAt: string
-}
-
-export type Category = {
-  id: number
-  name: string
-  slug: string
-  count: number
-}
-
-export type Level = {
-  id: number
-  name: "Beginner" | "Intermediate" | "Advanced"
-  slug: string
-}
-
-export type Duration = {
-  id: number
-  name: string
-  value: string
-}
-
-export type NavItems = {
-  name: string,
-  href: string
-}
 
 // NavItems data
 export const navItems: NavItems[] = [
@@ -97,7 +45,7 @@ export const durations: Duration[] = [
 // Courses data
 export const courses: Course[] = [
   {
-    id: 1,
+    _id: 1,
     title: "Web Development Fundamentals",
     slug: "web-development-fundamentals",
     description: "Learn the core concepts of HTML, CSS, and JavaScript to build modern websites.",
@@ -120,7 +68,7 @@ export const courses: Course[] = [
     updatedAt: "2023-09-15",
   },
   {
-    id: 2,
+    _id: 2,
     title: "Data Science Essentials",
     slug: "data-science-essentials",
     description: "Master the fundamentals of data analysis, visualization, and machine learning.",
@@ -143,7 +91,7 @@ export const courses: Course[] = [
     updatedAt: "2023-10-20",
   },
   {
-    id: 3,
+    _id: 3,
     title: "UX/UI Design Principles",
     slug: "ux-ui-design-principles",
     description: "Create beautiful, user-friendly interfaces with modern design principles.",
@@ -166,7 +114,7 @@ export const courses: Course[] = [
     updatedAt: "2023-08-05",
   },
   {
-    id: 4,
+    _id: 4,
     title: "Advanced React Development",
     slug: "advanced-react-development",
     description: "Take your React skills to the next level with advanced patterns and techniques.",
@@ -189,7 +137,7 @@ export const courses: Course[] = [
     updatedAt: "2023-11-10",
   },
   {
-    id: 5,
+    _id: 5,
     title: "Digital Marketing Masterclass",
     slug: "digital-marketing-masterclass",
     description: "Learn how to create and execute effective digital marketing campaigns.",
@@ -212,7 +160,7 @@ export const courses: Course[] = [
     updatedAt: "2023-07-25",
   },
   {
-    id: 6,
+    _id: 6,
     title: "Python for Data Analysis",
     slug: "python-for-data-analysis",
     description: "Master Python libraries like Pandas, NumPy, and Matplotlib for data analysis.",
@@ -235,7 +183,7 @@ export const courses: Course[] = [
     updatedAt: "2023-10-05",
   },
   {
-    id: 7,
+    _id: 7,
     title: "Graphic Design Fundamentals",
     slug: "graphic-design-fundamentals",
     description: "Learn the principles of graphic design and how to use industry-standard tools.",
@@ -258,7 +206,7 @@ export const courses: Course[] = [
     updatedAt: "2023-06-15",
   },
   {
-    id: 8,
+    _id: 8,
     title: "Business Strategy and Management",
     slug: "business-strategy-management",
     description: "Develop strategic thinking and management skills for business success.",
@@ -281,7 +229,7 @@ export const courses: Course[] = [
     updatedAt: "2023-09-01",
   },
   {
-    id: 9,
+    _id: 9,
     title: "Mobile App Development with React Native",
     slug: "mobile-app-development-react-native",
     description: "Build cross-platform mobile apps for iOS and Android using React Native.",
@@ -304,7 +252,7 @@ export const courses: Course[] = [
     updatedAt: "2023-11-20",
   },
   {
-    id: 10,
+    _id: 10,
     title: "Cloud Computing with AWS",
     slug: "cloud-computing-aws",
     description: "Master Amazon Web Services (AWS) and build scalable cloud applications.",
@@ -327,7 +275,7 @@ export const courses: Course[] = [
     updatedAt: "2023-10-15",
   },
   {
-    id: 11,
+    _id: 11,
     title: "Content Marketing Strategy",
     slug: "content-marketing-strategy",
     description: "Learn how to create and distribute valuable content to attract and engage your audience.",
@@ -350,7 +298,7 @@ export const courses: Course[] = [
     updatedAt: "2023-08-20",
   },
   {
-    id: 12,
+    _id: 12,
     title: "Machine Learning Fundamentals",
     slug: "machine-learning-fundamentals",
     description: "Learn the basics of machine learning algorithms and how to implement them in Python.",
@@ -428,4 +376,64 @@ export const searchCourses = (query: string) => {
       course.tags.some((tag) => tag.toLowerCase().includes(lowercaseQuery)),
   )
 }
+
+
+
+
+// Sample testimonials
+export const testimonials = [
+  {
+    id: 1,
+    name: "Alex Thompson",
+    role: "Software Developer",
+    avatar: "/placeholder.svg?height=80&width=80",
+    content:
+      "LearnHub has completely transformed my career. The courses are comprehensive and the instructors are top-notch. I went from a beginner to landing my dream job in just 6 months!",
+    rating: 5,
+  },
+  {
+    id: 2,
+    name: "Sophia Martinez",
+    role: "UX Designer",
+    avatar: "/placeholder.svg?height=80&width=80",
+    content:
+      "The design courses on LearnHub are exceptional. They provide practical knowledge that I was able to apply immediately in my work. The community support is also amazing!",
+    rating: 5,
+  },
+  {
+    id: 3,
+    name: "David Kim",
+    role: "Marketing Specialist",
+    avatar: "/placeholder.svg?height=80&width=80",
+    content:
+      "I've taken several marketing courses on different platforms, but LearnHub stands out for its quality content and engaging instructors. Highly recommended!",
+    rating: 4,
+  },
+  {
+    id: 4,
+    name: "Emily Johnson",
+    role: "Data Scientist",
+    avatar: "/placeholder.svg?height=80&width=80",
+    content:
+      "The data science courses on LearnHub helped me transition into a new career. The instructors explain complex concepts in a way that's easy to understand.",
+    rating: 5,
+  },
+  {
+    id: 5,
+    name: "Michael Rodriguez",
+    role: "Frontend Developer",
+    avatar: "/placeholder.svg?height=80&width=80",
+    content:
+      "I've learned so much from LearnHub's frontend development courses. The projects are practical and helped me build a strong portfolio.",
+    rating: 5,
+  },
+]
+
+// Stats data
+export const stats = [
+  { label: "Students", value: 10000, suffix: "+" },
+  { label: "Courses", value: 1000, suffix: "+" },
+  { label: "Instructors", value: 200, suffix: "+" },
+  { label: "Categories", value: 50, suffix: "+" },
+]
 

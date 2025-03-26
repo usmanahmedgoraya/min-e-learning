@@ -1,14 +1,14 @@
 "use client"
 
-import { SlidersHorizontal, X } from "lucide-react"
 import { useState } from "react"
+import { SlidersHorizontal, X } from "lucide-react"
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Slider } from "@/components/ui/slider"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { motion } from "framer-motion"
 
 interface CourseFiltersProps {
@@ -151,7 +151,7 @@ function MobileFilters({
   toggleDuration,
   updatePriceRange,
   resetFilters,
-  closeSheet
+  closeSheet,
 }: CourseFiltersProps & { closeSheet: () => void }) {
   return (
     <div className="flex h-full flex-col">
@@ -161,19 +161,19 @@ function MobileFilters({
             <AccordionTrigger>Categories</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col space-y-2">
-                {categories.map((category) => (
-                  <div key={category.id} className="flex items-center space-x-2">
+                {categories.map((category,index) => (
+                  <div key={index} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`category-${category.id}-mobile`}
+                      id={`category-${index}-mobile`}
                       checked={filters.categories.includes(category.name.toLowerCase())}
                       onCheckedChange={() => toggleCategory(category.name)}
                     />
                     <label
-                      htmlFor={`category-${category.id}-mobile`}
+                      htmlFor={`category-${index}-mobile`}
                       className="flex flex-1 items-center justify-between text-sm"
                     >
                       {category.name}
-                      <span className="text-xs text-muted-foreground">({category.count})</span>
+                      {/* <span className="text-xs text-muted-foreground">({category.count})</span> */}
                     </label>
                   </div>
                 ))}
@@ -185,19 +185,19 @@ function MobileFilters({
             <AccordionTrigger>Levels</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col space-y-2">
-                {levels.map((level) => (
-                  <div key={level.id} className="flex items-center space-x-2">
+                {levels.map((level,index) => (
+                  <div key={index} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`level-${level.id}-mobile`}
+                      id={`level-${index}-mobile`}
                       checked={filters.levels.includes(level.name.toLowerCase())}
                       onCheckedChange={() => toggleLevel(level.name)}
                     />
                     <label
-                      htmlFor={`level-${level.id}-mobile`}
+                      htmlFor={`level-${index}-mobile`}
                       className="flex flex-1 items-center justify-between text-sm"
                     >
                       {level.name}
-                      <span className="text-xs text-muted-foreground">({level.count})</span>
+                      {/* <span className="text-xs text-muted-foreground">({level.count})</span> */}
                     </label>
                   </div>
                 ))}
@@ -209,8 +209,8 @@ function MobileFilters({
             <AccordionTrigger>Duration</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col space-y-2">
-                {durations.map((duration) => (
-                  <div key={duration.id} className="flex items-center space-x-2">
+                {durations.map((duration,index) => (
+                  <div key={index} className="flex items-center space-x-2">
                     <Checkbox
                       id={`duration-${duration.id}-mobile`}
                       checked={filters.durations.includes(duration.value)}
@@ -221,7 +221,7 @@ function MobileFilters({
                       className="flex flex-1 items-center justify-between text-sm"
                     >
                       {duration.name}
-                      <span className="text-xs text-muted-foreground">({duration.count})</span>
+                      {/* <span className="text-xs text-muted-foreground">({duration.count})</span> */}
                     </label>
                   </div>
                 ))}
@@ -277,14 +277,14 @@ function DesktopFilters({
       <div className="space-y-4">
         <h3 className="font-medium">Categories</h3>
         <div className="flex flex-col space-y-2">
-          {categories.map((category) => (
-            <div key={category.id} className="flex items-center space-x-2">
+          {categories.map((category,index) => (
+            <div key={index} className="flex items-center space-x-2">
               <Checkbox
-                id={`category-${category.id}`}
+                id={`category-${index}`}
                 checked={filters.categories.includes(category.name.toLowerCase())}
                 onCheckedChange={() => toggleCategory(category.name)}
               />
-              <label htmlFor={`category-${category.id}`} className="flex flex-1 items-center justify-between text-sm">
+              <label htmlFor={`category-${index}`} className="flex flex-1 items-center justify-between text-sm">
                 {category.name}
                 <span className="text-xs text-muted-foreground">({category.count})</span>
               </label>
@@ -296,14 +296,14 @@ function DesktopFilters({
       <div className="space-y-4">
         <h3 className="font-medium">Levels</h3>
         <div className="flex flex-col space-y-2">
-          {levels.map((level) => (
-            <div key={level.id} className="flex items-center space-x-2">
+          {levels.map((level,index) => (
+            <div key={index} className="flex items-center space-x-2">
               <Checkbox
-                id={`level-${level.id}`}
+                id={`level-${index}`}
                 checked={filters.levels.includes(level.name.toLowerCase())}
                 onCheckedChange={() => toggleLevel(level.name)}
               />
-              <label htmlFor={`level-${level.id}`} className="flex flex-1 items-center justify-between text-sm">
+              <label htmlFor={`level-${index}`} className="flex flex-1 items-center justify-between text-sm">
                 {level.name}
                 <span className="text-xs text-muted-foreground">({level.count})</span>
               </label>

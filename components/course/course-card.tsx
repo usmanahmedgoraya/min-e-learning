@@ -5,10 +5,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { BookOpen, Clock, Star, Users } from "lucide-react"
 
-import type { Course } from "@/lib/data"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Course } from "@/types/type"
 
 interface CourseCardProps {
   course: Course
@@ -38,7 +38,7 @@ export const CourseCard = React.memo(function CourseCard({ course, variant = "de
           </CardHeader>
           <CardFooter className="mt-auto border-t p-3">
             <div className="flex w-full items-center justify-between">
-              <span className="font-bold">${course.price.toFixed(2)}</span>
+              <span className="font-bold">${course.price}</span>
               <Button size="sm" variant="ghost" className="h-8 px-2" asChild>
                 <Link href={`/courses/${course.slug}`}>
                   <BookOpen className="mr-1 h-3 w-3" />
@@ -89,7 +89,7 @@ export const CourseCard = React.memo(function CourseCard({ course, variant = "de
       </CardContent>
       <CardFooter className="border-t bg-muted/50 px-6 py-3">
         <div className="flex w-full items-center justify-between">
-          <div className="text-lg font-bold">${course.price.toFixed(2)}</div>
+          <div className="text-lg font-bold">${course.price}</div>
           <Button size="sm" asChild>
             <Link href={`/courses/${course.slug}`}>
               <BookOpen className="mr-2 h-4 w-4" />

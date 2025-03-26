@@ -1,16 +1,16 @@
 "use client"
 
+import { RootState } from "@/lib/redux/store"
 import { useQuery } from "@tanstack/react-query"
-import { courses } from "@/lib/data"
+import { useSelector } from "react-redux"
 
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // Get all courses with pagination and search
-export async function fetchCourses(page = 1, limit = 9, search = "") {
-  await delay(800)
-
-  let filteredCourses = [...courses]
+export async function fetchCourses(page = 1, limit = 9, search = "", allCourses: any[]) {
+  await delay(500) // Reduced delay for better UX
+  let filteredCourses = [...allCourses]
 
   // Apply search filter
   if (search) {
@@ -20,7 +20,7 @@ export async function fetchCourses(page = 1, limit = 9, search = "") {
         course.title.toLowerCase().includes(searchLower) ||
         course.description.toLowerCase().includes(searchLower) ||
         course.category.toLowerCase().includes(searchLower) ||
-        course.tags.some((tag) => tag.toLowerCase().includes(searchLower)),
+        (course.tags && course.tags.some((tag: string) => tag.toLowerCase().includes(searchLower)))
     )
   }
 
@@ -43,10 +43,9 @@ export async function fetchCourses(page = 1, limit = 9, search = "") {
 }
 
 // Get a single course by slug
-export async function fetchCourseBySlug(slug: string) {
-  await delay(800) // Simulate network delay
-
-  const course = courses.find((course) => course.slug === slug)
+export async function fetchCourseBySlug(slug: string, allCourses: any[]) {
+  await delay(500)
+  const course = allCourses.find((course) => course.slug === slug)
 
   if (!course) {
     throw new Error("Course not found")
@@ -69,19 +68,23 @@ export async function fetchCourseBySlug(slug: string) {
 
 // Hook for fetching courses with pagination and search
 export function useCourses(page = 1, limit = 9, search = "") {
+  const { courses: allCourses } = useSelector((state: RootState) => state.courses)
+  
   return useQuery({
-    queryKey: ["courses", page, limit, search],
-    queryFn: () => fetchCourses(page, limit, search),
-    refetchIntervalInBackground:true
+    queryKey: ["courses", page, limit, search, allCourses],
+    queryFn: () => fetchCourses(page, limit, search, allCourses),
+    staleTime: 5000, // Consider using staleTime to keep data fresh
+    enabled: !!allCourses && allCourses.length > 0
   })
 }
 
 // Hook for fetching a single course by slug
 export function useCourse(slug: string) {
+  const { courses: allCourses } = useSelector((state: RootState) => state.courses)
+  
   return useQuery({
-    queryKey: ["course", slug],
-    queryFn: () => fetchCourseBySlug(slug),
-    enabled: !!slug, // Only fetch if slug is provided
+    queryKey: ["course", slug, allCourses],
+    queryFn: () => fetchCourseBySlug(slug, allCourses),
+    enabled: !!slug && !!allCourses && allCourses.length > 0,
   })
 }
-

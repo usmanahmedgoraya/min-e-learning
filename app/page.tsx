@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { ArrowRight, BookOpen, Clock, Star, Users, ChevronDown } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -13,107 +13,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
+import { stats, testimonials } from "@/lib/data"
+import { useDispatch } from "react-redux"
+import { getCourses, getFeaturedCourses } from "./actions/course.action"
+import { setCourses, setFeaturedCourses } from "@/lib/redux/slices/coursesSlice"
+import { RootState } from "@/lib/redux/store"
+import { useSelector } from "react-redux"
+import { Course } from "@/types/type"
 
-// Sample featured courses data
-const featuredCourses = [
-  {
-    id: 1,
-    title: "Web Development Fundamentals",
-    description: "Learn the core concepts of HTML, CSS, and JavaScript to build modern websites.",
-    image: "https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png",
-    instructor: "Sarah Johnson",
-    rating: 4.8,
-    students: 1245,
-    duration: "12 hours",
-    level: "Beginner",
-    category: "Development",
-  },
-  {
-    id: 2,
-    title: "Data Science Essentials",
-    description: "Master the fundamentals of data analysis, visualization, and machine learning.",
-    image: "/placeholder.svg?height=200&width=350",
-    instructor: "Michael Chen",
-    rating: 4.9,
-    students: 982,
-    duration: "15 hours",
-    level: "Intermediate",
-    category: "Data Science",
-  },
-  {
-    id: 3,
-    title: "UX/UI Design Principles",
-    description: "Create beautiful, user-friendly interfaces with modern design principles.",
-    image: "/placeholder.svg?height=200&width=350",
-    instructor: "Emma Rodriguez",
-    rating: 4.7,
-    students: 756,
-    duration: "10 hours",
-    level: "Beginner",
-    category: "Design",
-  },
-]
-
-// Sample testimonials
-const testimonials = [
-  {
-    id: 1,
-    name: "Alex Thompson",
-    role: "Software Developer",
-    avatar: "/placeholder.svg?height=80&width=80",
-    content:
-      "LearnHub has completely transformed my career. The courses are comprehensive and the instructors are top-notch. I went from a beginner to landing my dream job in just 6 months!",
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "Sophia Martinez",
-    role: "UX Designer",
-    avatar: "/placeholder.svg?height=80&width=80",
-    content:
-      "The design courses on LearnHub are exceptional. They provide practical knowledge that I was able to apply immediately in my work. The community support is also amazing!",
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: "David Kim",
-    role: "Marketing Specialist",
-    avatar: "/placeholder.svg?height=80&width=80",
-    content:
-      "I've taken several marketing courses on different platforms, but LearnHub stands out for its quality content and engaging instructors. Highly recommended!",
-    rating: 4,
-  },
-  {
-    id: 4,
-    name: "Emily Johnson",
-    role: "Data Scientist",
-    avatar: "/placeholder.svg?height=80&width=80",
-    content:
-      "The data science courses on LearnHub helped me transition into a new career. The instructors explain complex concepts in a way that's easy to understand.",
-    rating: 5,
-  },
-  {
-    id: 5,
-    name: "Michael Rodriguez",
-    role: "Frontend Developer",
-    avatar: "/placeholder.svg?height=80&width=80",
-    content:
-      "I've learned so much from LearnHub's frontend development courses. The projects are practical and helped me build a strong portfolio.",
-    rating: 5,
-  },
-]
-
-// Stats data
-const stats = [
-  { label: "Students", value: 10000, suffix: "+" },
-  { label: "Courses", value: 1000, suffix: "+" },
-  { label: "Instructors", value: 200, suffix: "+" },
-  { label: "Categories", value: 50, suffix: "+" },
-]
 
 // Animation variants
 const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 1, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
@@ -122,7 +33,7 @@ const fadeIn = {
 }
 
 const staggerContainer = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
@@ -132,9 +43,22 @@ const staggerContainer = {
 }
 
 export default function Home() {
+  const featuredCourses = useSelector((state: RootState) => (state.courses.featuredCourses))
   const featuredRef = useRef<HTMLElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
   const isStatsInView = useInView(statsRef, { once: true, amount: 0.5 })
+
+  const dispatch = useDispatch();
+  const fetchData = async () => {
+    const courseData = await getCourses();
+    const featuredCourse = await getFeaturedCourses();
+    dispatch(setCourses(courseData))
+    dispatch(setFeaturedCourses(featuredCourse))
+  }
+  useEffect(() => {
+    fetchData()
+  }, [dispatch])
+
 
   const scrollToFeatured = () => {
     featuredRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -145,7 +69,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted/30 pt-16">
         <motion.div
-          className="container flex flex-col items-center"
+          className="container flex flex-col items-center dark:mb-12"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
@@ -176,7 +100,7 @@ export default function Home() {
           <motion.div className="mt-12 flex w-full justify-center" variants={fadeIn}>
             <div className="relative h-[350px] w-full max-w-[900px] overflow-hidden rounded-lg md:h-[500px]">
               <Image
-                src="/placeholder.svg?height=500&width=900"
+                src="https://img.freepik.com/free-photo/close-up-hand-writing-notebook-top-view_23-2148888824.jpg?ga=GA1.1.1866422441.1739526712&semt=ais_hybrid"
                 alt="Students learning online"
                 fill
                 className="object-cover"
@@ -241,8 +165,8 @@ export default function Home() {
           </motion.div>
 
           <motion.div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" variants={staggerContainer}>
-            {featuredCourses.map((course, index) => (
-              <motion.div key={course.id} variants={fadeIn} custom={index}>
+            {featuredCourses?.map((course:Course, index) => (
+              <motion.div key={course._id} variants={fadeIn} custom={index}>
                 <Card className="overflow-hidden transition-all hover:shadow-lg !py-0">
                   <div className="aspect-video relative">
                     <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
@@ -278,7 +202,7 @@ export default function Home() {
                     <div className="flex w-full items-center justify-between">
                       <div className="text-sm font-medium">By {course.instructor}</div>
                       <Button size="sm" variant="ghost" className="gap-1" asChild>
-                        <Link href={`/courses/${course.id}`}>
+                        <Link href={`/courses/${course._id}`}>
                           <BookOpen className="h-4 w-4" />
                           Enroll
                         </Link>
@@ -312,7 +236,7 @@ export default function Home() {
             <Marquee gradient={false} speed={40} pauseOnHover={true} className="py-4">
               <div className="flex gap-6">
                 {testimonials.map((testimonial) => (
-                  <Card key={testimonial.id} className="w-[350px] flex-shrink-0 mx-4">
+                  <Card key={testimonial.id} className="w-[350px] flex-shrink-0 mx-4 p-4">
                     <CardHeader>
                       <div className="flex items-center gap-4">
                         <Avatar className="h-12 w-12">
