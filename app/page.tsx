@@ -92,7 +92,7 @@ export default function Home() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/about">Learn More</Link>
+                <Link href="/">Learn More</Link>
               </Button>
             </div>
           </motion.div>
@@ -202,7 +202,7 @@ export default function Home() {
                     <div className="flex w-full items-center justify-between">
                       <div className="text-sm font-medium">By {course.instructor}</div>
                       <Button size="sm" variant="ghost" className="gap-1" asChild>
-                        <Link href={`/courses/${course._id}`}>
+                        <Link href={`/courses/${course.slug}`}>
                           <BookOpen className="h-4 w-4" />
                           Enroll
                         </Link>
