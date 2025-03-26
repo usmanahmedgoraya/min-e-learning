@@ -9,6 +9,15 @@ This documentation provides comprehensive guidelines on setting up the project l
 
 ---
 
+### Links
+
+Frontend live link : https://e-learning-mini.vercel.app
+
+Frontend Repo link : https://github.com/usmanahmedgoraya/min-e-learning.git
+
+backend live link Swagger : https://mini-e-learning-backend.vercel.app/api
+
+backend repo link : https://github.com/usmanahmedgoraya/mini-e-learning-backend
   
 
 ## 1. How to Set Up the Project Locally
