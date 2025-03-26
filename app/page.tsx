@@ -165,12 +165,14 @@ export default function Home() {
           </motion.div>
 
           <motion.div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" variants={staggerContainer}>
-            {featuredCourses?.map((course:Course, index) => (
+            {featuredCourses?.map((course: Course, index) => (
               <motion.div key={course._id} variants={fadeIn} custom={index}>
                 <Card className="overflow-hidden transition-all hover:shadow-lg !py-0">
-                  <div className="aspect-video relative">
-                    <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
-                  </div>
+                  <Link href={`/courses/${course.slug}`}>
+                    <div className="aspect-video relative">
+                      <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
+                    </div>
+                  </Link>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <Badge variant="outline" className="bg-primary/10 text-primary">
@@ -180,7 +182,9 @@ export default function Home() {
                         {course.level}
                       </Badge>
                     </div>
-                    <CardTitle className="line-clamp-1 mt-2">{course.title}</CardTitle>
+                    <Link href={`/courses/${course.slug}`} className="hover:underline">
+                      <CardTitle className="line-clamp-1 mt-2">{course.title}</CardTitle>
+                    </Link>
                     <CardDescription className="line-clamp-2">{course.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
